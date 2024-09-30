@@ -26,36 +26,36 @@ public class NewsService {
 
     public List<NewsResponseTo> getAll() {
         return NEWS_REPOSITORY.findAll()
-                                .stream()
-                                .map(NEWS_MAPPER::toResponseTo)
-                                .toList();
+                              .stream()
+                              .map(NEWS_MAPPER::toResponseTo)
+                              .toList();
     };
 
     public NewsResponseTo getById(Long id) {
         return NEWS_REPOSITORY.findById(id)
-                                .map(NEWS_MAPPER::toResponseTo)
-                                .orElseThrow(() -> 
-                                    new EntityNotFoundException("News", id));
+                              .map(NEWS_MAPPER::toResponseTo)
+                              .orElseThrow(() -> 
+                                  new EntityNotFoundException("News", id));
     };
 
     public NewsResponseTo save(NewsRequestTo news) {
         checkAuthorExistence(news.authorId());
         return Optional.of(news)
-                        .map(NEWS_MAPPER::toEntity)
-                        .map(NEWS_REPOSITORY::save)
-                        .map(NEWS_MAPPER::toResponseTo)
-                        .orElseThrow(() -> 
-                            new EntityNotSavedException("News", news.id()));
+                       .map(NEWS_MAPPER::toEntity)
+                       .map(NEWS_REPOSITORY::save)
+                       .map(NEWS_MAPPER::toResponseTo)
+                       .orElseThrow(() -> 
+                           new EntityNotSavedException("News", news.id()));
     };
 
     public NewsResponseTo update(NewsRequestTo news) {
         checkAuthorExistence(news.authorId());
         return NEWS_REPOSITORY.findById(news.id())
-                                .map(entity -> NEWS_MAPPER.updateEntity(entity, news))
-                                .map(NEWS_REPOSITORY::save)
-                                .map(NEWS_MAPPER::toResponseTo)
-                                .orElseThrow(() -> 
-                                    new EntityNotFoundException("News", news.id()));
+                              .map(entity -> NEWS_MAPPER.updateEntity(entity, news))
+                              .map(NEWS_REPOSITORY::save)
+                              .map(NEWS_MAPPER::toResponseTo)
+                              .orElseThrow(() -> 
+                                  new EntityNotFoundException("News", news.id()));
     };
 
     public void delete(Long id) {

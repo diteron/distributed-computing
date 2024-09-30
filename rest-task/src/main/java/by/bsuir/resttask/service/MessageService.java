@@ -26,36 +26,36 @@ public class MessageService {
 
     public List<MessageResponseTo> getAll() {
         return MESSAGE_REPOSITORY.findAll()
-                                .stream()
-                                .map(MESSAGE_MAPPER::toResponseTo)
-                                .toList();
+                                 .stream()
+                                 .map(MESSAGE_MAPPER::toResponseTo)
+                                 .toList();
     };
 
     public MessageResponseTo getById(Long id) {
         return MESSAGE_REPOSITORY.findById(id)
-                                .map(MESSAGE_MAPPER::toResponseTo)
-                                .orElseThrow(() -> 
-                                    new EntityNotFoundException("Message", id));
+                                 .map(MESSAGE_MAPPER::toResponseTo)
+                                 .orElseThrow(() -> 
+                                     new EntityNotFoundException("Message", id));
     };
 
     public MessageResponseTo save(MessageRequestTo message) {
         checkNewsExistence(message.newsId());
         return Optional.of(message)
-                        .map(MESSAGE_MAPPER::toEntity)
-                        .map(MESSAGE_REPOSITORY::save)
-                        .map(MESSAGE_MAPPER::toResponseTo)
-                        .orElseThrow(() -> 
-                            new EntityNotSavedException("Message", message.id()));
+                       .map(MESSAGE_MAPPER::toEntity)
+                       .map(MESSAGE_REPOSITORY::save)
+                       .map(MESSAGE_MAPPER::toResponseTo)
+                       .orElseThrow(() -> 
+                           new EntityNotSavedException("Message", message.id()));
     };
 
     public MessageResponseTo update(MessageRequestTo message) {
         checkNewsExistence(message.newsId());
         return MESSAGE_REPOSITORY.findById(message.id())
-                                .map(entity -> MESSAGE_MAPPER.updateEntity(entity, message))
-                                .map(MESSAGE_REPOSITORY::save)
-                                .map(MESSAGE_MAPPER::toResponseTo)
-                                .orElseThrow(() -> 
-                                    new EntityNotFoundException("Message", message.id()));
+                                 .map(entity -> MESSAGE_MAPPER.updateEntity(entity, message))
+                                 .map(MESSAGE_REPOSITORY::save)
+                                 .map(MESSAGE_MAPPER::toResponseTo)
+                                 .orElseThrow(() -> 
+                                     new EntityNotFoundException("Message", message.id()));
     };
 
     public void delete(Long id) {
