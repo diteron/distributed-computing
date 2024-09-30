@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record AuthorRequestTo(
+    Long id,
+    
     @NotNull
     @Size(min = 2, max = 64, message = "Login must be between 2 and 64 characters")
     String login,
@@ -14,9 +16,9 @@ public record AuthorRequestTo(
     
     @NotNull
     @Size(min = 2, max = 64, message = "First name must be between 2 and 64 characters")
-    String firstName,
+    String firstname,
         
     @NotNull
     @Size(min = 2, max = 64, message = "Last name must be between 2 and 64 characters")
-    String lastName    
+    String lastname    
 ) {}
