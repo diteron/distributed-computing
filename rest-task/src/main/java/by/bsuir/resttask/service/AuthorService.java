@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 
 import by.bsuir.resttask.dto.request.AuthorRequestTo;
 import by.bsuir.resttask.dto.response.AuthorResponseTo;
-import by.bsuir.resttask.entity.Author;
 import by.bsuir.resttask.exception.EntityNotFoundException;
 import by.bsuir.resttask.exception.EntityNotSavedException;
 import by.bsuir.resttask.mapper.AuthorMapper;
-import by.bsuir.resttask.repository.Repository;
+import by.bsuir.resttask.repository.AuthorRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthorService {
 
     private final AuthorMapper AUTHOR_MAPPER;
-    private final Repository<Author, Long> AUTHOR_REPOSITORY;
+    private final AuthorRepository AUTHOR_REPOSITORY;
 
     public List<AuthorResponseTo> getAll() {
         return AUTHOR_REPOSITORY.findAll()

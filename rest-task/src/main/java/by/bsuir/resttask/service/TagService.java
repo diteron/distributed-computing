@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 
 import by.bsuir.resttask.dto.request.TagRequestTo;
 import by.bsuir.resttask.dto.response.TagResponseTo;
-import by.bsuir.resttask.entity.Tag;
 import by.bsuir.resttask.exception.EntityNotFoundException;
 import by.bsuir.resttask.exception.EntityNotSavedException;
 import by.bsuir.resttask.mapper.TagMapper;
-import by.bsuir.resttask.repository.Repository;
+import by.bsuir.resttask.repository.TagRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class TagService {
 
     private final TagMapper TAG_MAPPER;
-    private final Repository<Tag, Long> TAG_REPOSITORY;
+    private final TagRepository TAG_REPOSITORY;
 
     public List<TagResponseTo> getAll() {
         return TAG_REPOSITORY.findAll()
@@ -58,7 +57,7 @@ public class TagService {
         TAG_REPOSITORY.findById(id)
                       .ifPresentOrElse(TAG_REPOSITORY::delete,
                                        () -> { 
-                                           throw new EntityNotFoundException("Message", id); 
+                                           throw new EntityNotFoundException("Tag", id); 
                                        });  
         
     };

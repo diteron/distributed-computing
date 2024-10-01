@@ -1,6 +1,7 @@
-package by.bsuir.resttask.repository;
+package by.bsuir.resttask.repository.inmemory;
 
 import by.bsuir.resttask.entity.Entity;
+import by.bsuir.resttask.repository.Repository;
 import jakarta.annotation.Nonnull;
 
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@org.springframework.stereotype.Repository
-public class InMemoryRepository<T extends Entity> implements Repository<T, Long> {
+
+public abstract class InMemoryRepository<T extends Entity> implements Repository<T, Long> {
     
     private final AtomicLong ID_COUNTER = new AtomicLong();
     private final Map<Long, T> ENTITIES = new ConcurrentHashMap<>();

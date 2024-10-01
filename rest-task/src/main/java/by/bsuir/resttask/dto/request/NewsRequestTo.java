@@ -14,4 +14,6 @@ public record NewsRequestTo(
     @NotNull
     @Size(min = 4, max = 2048, message = "Content must be between 4 and 2048 characters")
     String content
-) {}
+) {
+    
+}

@@ -7,11 +7,10 @@ import org.springframework.stereotype.Service;
 
 import by.bsuir.resttask.dto.request.MessageRequestTo;
 import by.bsuir.resttask.dto.response.MessageResponseTo;
-import by.bsuir.resttask.entity.Message;
 import by.bsuir.resttask.exception.EntityNotFoundException;
 import by.bsuir.resttask.exception.EntityNotSavedException;
 import by.bsuir.resttask.mapper.MessageMapper;
-import by.bsuir.resttask.repository.Repository;
+import by.bsuir.resttask.repository.MessageRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class MessageService {
 
     private final MessageMapper MESSAGE_MAPPER;
-    private final Repository<Message, Long> MESSAGE_REPOSITORY;
+    private final MessageRepository MESSAGE_REPOSITORY;
     
     private final NewsService NEWS_SERVICE;
 

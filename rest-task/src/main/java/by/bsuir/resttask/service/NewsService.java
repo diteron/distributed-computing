@@ -11,7 +11,7 @@ import by.bsuir.resttask.entity.News;
 import by.bsuir.resttask.exception.EntityNotFoundException;
 import by.bsuir.resttask.exception.EntityNotSavedException;
 import by.bsuir.resttask.mapper.NewsMapper;
-import by.bsuir.resttask.repository.Repository;
+import by.bsuir.resttask.repository.NewsRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,13 +20,14 @@ import lombok.RequiredArgsConstructor;
 public class NewsService {
 
     private final NewsMapper NEWS_MAPPER;
-    private final Repository<News, Long> NEWS_REPOSITORY;
+    private final NewsRepository NEWS_REPOSITORY;
 
     private final AuthorService AUTHOR_SERVICE;
 
     public List<NewsResponseTo> getAll() {
         return NEWS_REPOSITORY.findAll()
                               .stream()
+                              .filter(news -> news instanceof News)
                               .map(NEWS_MAPPER::toResponseTo)
                               .toList();
     };
@@ -62,7 +63,7 @@ public class NewsService {
         NEWS_REPOSITORY.findById(id)
                        .ifPresentOrElse(NEWS_REPOSITORY::delete,
                                         () -> { 
-                                            throw new EntityNotFoundException("Message", id); 
+                                            throw new EntityNotFoundException("News", id); 
                                         });  
     };
 

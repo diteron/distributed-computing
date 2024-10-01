@@ -21,4 +21,6 @@ public record AuthorRequestTo(
     @NotNull
     @Size(min = 2, max = 64, message = "Last name must be between 2 and 64 characters")
     String lastname    
-) {}
+) {
+
+}
