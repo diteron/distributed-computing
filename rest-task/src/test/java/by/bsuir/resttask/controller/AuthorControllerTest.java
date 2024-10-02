@@ -1,14 +1,12 @@
 package by.bsuir.resttask.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import by.bsuir.resttask.dto.request.AuthorRequestTo;
 import by.bsuir.resttask.dto.response.AuthorResponseTo;
 
 public class AuthorControllerTest extends RestControllerTest<AuthorRequestTo, AuthorResponseTo> {
 
     @Override
-    protected AuthorRequestTo getRandomRequestTo() {
+    protected AuthorRequestTo getRequestTo() {
         return new AuthorRequestTo(null,
                                    "login"     + RANDOM_NUMBER_GENERATOR.nextInt(),
                                    "password"  + RANDOM_NUMBER_GENERATOR.nextInt(),
@@ -27,14 +25,7 @@ public class AuthorControllerTest extends RestControllerTest<AuthorRequestTo, Au
     }
 
     @Override
-    protected String getMappingPath() {
+    protected String getRequestsMappingPath() {
         return "/authors";
-    }
-
-    @Override
-    protected void assertRequestAndResponceEquals(AuthorRequestTo request, AuthorResponseTo response) {
-        assertEquals(request.login(), response.login());
-        assertEquals(request.firstname(), response.firstname());
-        assertEquals(request.lastname(), response.lastname());
     }
 }

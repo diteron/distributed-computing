@@ -1,7 +1,5 @@
 package by.bsuir.resttask.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterAll;
 
 import by.bsuir.resttask.dto.request.AuthorRequestTo;
@@ -21,7 +19,7 @@ public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsRe
     }
 
     @Override
-    protected NewsRequestTo getRandomRequestTo() {
+    protected NewsRequestTo getRequestTo() {
         createForeignKeyEntitiesIfNeeded();
         return new NewsRequestTo(null, authorId,
                                  "title"   + RANDOM_NUMBER_GENERATOR.nextInt(),
@@ -37,15 +35,8 @@ public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsRe
     }
 
     @Override
-    protected String getMappingPath() {
+    protected String getRequestsMappingPath() {
         return "/news";
-    }
-
-    @Override
-    protected void assertRequestAndResponceEquals(NewsRequestTo request, NewsResponseTo response) {
-        assertEquals(request.authorId(), response.authorId());
-        assertEquals(request.title(), response.title());
-        assertEquals(request.content(), response.content());
     }
 
     private void createForeignKeyEntitiesIfNeeded() {

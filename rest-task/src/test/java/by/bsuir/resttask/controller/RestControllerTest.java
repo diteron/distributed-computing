@@ -46,7 +46,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void save_ShouldReturn201() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
 
@@ -59,12 +59,12 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void getById_ShouldReturn200() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
 
         when()
-        .get(getMappingPath() + "/" + responseEntityId)
+        .get(getRequestsMappingPath() + "/" + responseEntityId)
         .then()
         .assertThat()
         .statusCode(HttpStatus.OK.value());
@@ -74,11 +74,11 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void getAll_ShouldReturn200() {
-        List<RQ> requests = List.of(getRandomRequestTo(), getRandomRequestTo());
+        List<RQ> requests = List.of(getRequestTo(), getRequestTo());
         List<Response> saveResponses = saveRequests(requests);
 
         when()
-        .get(getMappingPath())
+        .get(getRequestsMappingPath())
         .then()
         .assertThat()
         .statusCode(HttpStatus.OK.value());
@@ -88,7 +88,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void update_ShouldReturn200() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
         RQ updateRequest = getUpdateRequestTo(request, responseEntityId);
@@ -97,7 +97,7 @@ public abstract class RestControllerTest<RQ, RS> {
         .contentType(ContentType.JSON)
         .body(updateRequest)
         .when()
-        .put(getMappingPath())
+        .put(getRequestsMappingPath())
         .then()
         .assertThat()
         .statusCode(HttpStatus.OK.value());
@@ -107,7 +107,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void delete_ShouldReturn204() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
 
@@ -119,12 +119,12 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void getByNonExistentId_ShouldReturn404() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
 
         when()
-        .get(getMappingPath() + "/" + (responseEntityId + 1))
+        .get(getRequestsMappingPath() + "/" + (responseEntityId + 1))
         .then()
         .assertThat()
         .statusCode(HttpStatus.NOT_FOUND.value());
@@ -134,7 +134,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void updateByNonExistentId_ShouldReturn404() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
         RQ updateRequest = getUpdateRequestTo(request, responseEntityId + 1);
@@ -143,7 +143,7 @@ public abstract class RestControllerTest<RQ, RS> {
         .contentType(ContentType.JSON)
         .body(updateRequest)
         .when()
-        .put(getMappingPath())
+        .put(getRequestsMappingPath())
         .then()
         .assertThat()
         .statusCode(HttpStatus.NOT_FOUND.value());
@@ -153,7 +153,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     @Test
     public void deleteByNonExistentId_ShouldReturn404() {
-        RQ request = getRandomRequestTo();
+        RQ request = getRequestTo();
         Response saveResponse = saveRequest(request);
         Long responseEntityId = getResponseId(saveResponse);
 
@@ -165,16 +165,15 @@ public abstract class RestControllerTest<RQ, RS> {
         deleteEntity(responseEntityId);
     }
 
-    protected abstract RQ getRandomRequestTo();
+    protected abstract RQ getRequestTo();
     protected abstract RQ getUpdateRequestTo(RQ originalRequest, Long updateEntityId);
-    protected abstract String getMappingPath();
-    protected abstract void assertRequestAndResponceEquals(RQ request, RS response);
+    protected abstract String getRequestsMappingPath();
 
     protected Response saveRequest(RQ request) {
         return given()
                .contentType(ContentType.JSON)
                .body(request)
-               .post(getMappingPath());
+               .post(getRequestsMappingPath());
     }
     
     protected List<Response> saveRequests(List<RQ> requests) {
@@ -199,7 +198,7 @@ public abstract class RestControllerTest<RQ, RS> {
 
     protected Response deleteEntity(Long id) {
         return given()
-               .delete(getMappingPath() + "/" + id);
+               .delete(getRequestsMappingPath() + "/" + id);
     }
 
     protected List<Response> deleteEntities(List<Long> entitiesId) {
