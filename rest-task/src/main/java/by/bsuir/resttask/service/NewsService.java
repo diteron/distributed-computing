@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import by.bsuir.resttask.dto.request.NewsRequestTo;
 import by.bsuir.resttask.dto.response.NewsResponseTo;
-import by.bsuir.resttask.entity.News;
 import by.bsuir.resttask.exception.EntityNotFoundException;
 import by.bsuir.resttask.exception.EntityNotSavedException;
 import by.bsuir.resttask.mapper.NewsMapper;
@@ -27,7 +26,6 @@ public class NewsService {
     public List<NewsResponseTo> getAll() {
         return NEWS_REPOSITORY.findAll()
                               .stream()
-                              .filter(news -> news instanceof News)
                               .map(NEWS_MAPPER::toResponseTo)
                               .toList();
     };
