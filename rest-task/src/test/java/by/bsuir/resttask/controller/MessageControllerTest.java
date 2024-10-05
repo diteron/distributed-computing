@@ -9,22 +9,22 @@ import by.bsuir.resttask.dto.response.MessageResponseTo;
 import io.restassured.response.Response;
 
 public class MessageControllerTest extends RestControllerTest<MessageRequestTo, MessageResponseTo> {
-    private static Long authorId;
-    private static Long newsId;
+    private static Long fkAuthorId;
+    private static Long fkNewsId;
     private static boolean isForeignKeyEntitiesCreated = false;
 
     @AfterAll
     public static void deleteForeighnKeyEntities() {
         if (isForeignKeyEntitiesCreated) {
-            deleteForeignKeyEntity(authorId, "/authors");
-            deleteForeignKeyEntity(newsId, "/news");
+            deleteForeignKeyEntity(fkAuthorId, "/authors");
+            deleteForeignKeyEntity(fkNewsId, "/news");
         }
     }
 
     @Override
     protected MessageRequestTo getRequestTo() {
-        createForeignKeyEntitiesIfNeeded();
-        return new MessageRequestTo(null, newsId,
+        createForeignKeyEntitiesIfNotCreated();
+        return new MessageRequestTo(null, fkNewsId,
                                     "content" + RANDOM_NUMBER_GENERATOR.nextInt());
     }
 
@@ -40,16 +40,16 @@ public class MessageControllerTest extends RestControllerTest<MessageRequestTo, 
         return "/messages";
     }
 
-    private void createForeignKeyEntitiesIfNeeded() {
+    private void createForeignKeyEntitiesIfNotCreated() {
         if (!isForeignKeyEntitiesCreated) {
             AuthorRequestTo author = new AuthorRequestTo(null, "login", "password",
                                                          "firstame", "lastname");
             Response authResponse = createForeignKeyEntity(author, "/authors");                                                     
-            authorId = getResponseId(authResponse);
+            fkAuthorId = getResponseId(authResponse);
             
-            NewsRequestTo news = new NewsRequestTo(null, authorId, "Title", "Content");
+            NewsRequestTo news = new NewsRequestTo(null, fkAuthorId, "Title", "Content");
             Response newsResponse = createForeignKeyEntity(news, "/news");
-            newsId = getResponseId(newsResponse);
+            fkNewsId = getResponseId(newsResponse);
 
             isForeignKeyEntitiesCreated = true;
         }

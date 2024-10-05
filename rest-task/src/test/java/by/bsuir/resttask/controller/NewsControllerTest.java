@@ -8,20 +8,20 @@ import by.bsuir.resttask.dto.response.NewsResponseTo;
 import io.restassured.response.Response;
 
 public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsResponseTo> {
-    private static Long authorId;
+    private static Long fkAuthorId;
     private static boolean isForeignKeyEntitiesCreated = false;
 
     @AfterAll
     public static void deleteForeighnKeyEntities() {
         if (isForeignKeyEntitiesCreated) {
-            deleteForeignKeyEntity(authorId, "/authors");
+            deleteForeignKeyEntity(fkAuthorId, "/authors");
         }
     }
 
     @Override
     protected NewsRequestTo getRequestTo() {
-        createForeignKeyEntitiesIfNeeded();
-        return new NewsRequestTo(null, authorId,
+        createForeignKeyEntitiesIfNotCreated();
+        return new NewsRequestTo(null, fkAuthorId,
                                  "title"   + RANDOM_NUMBER_GENERATOR.nextInt(),
                                  "content" + RANDOM_NUMBER_GENERATOR.nextInt());
     }
@@ -39,12 +39,12 @@ public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsRe
         return "/news";
     }
 
-    private void createForeignKeyEntitiesIfNeeded() {
+    private void createForeignKeyEntitiesIfNotCreated() {
         if (!isForeignKeyEntitiesCreated) {
             AuthorRequestTo author = new AuthorRequestTo(null, "login", "password",
                                                          "firstame", "lastname");
             Response authResponse = createForeignKeyEntity(author, "/authors");                                                     
-            authorId = getResponseId(authResponse);
+            fkAuthorId = getResponseId(authResponse);
 
             isForeignKeyEntitiesCreated = true;
         }
