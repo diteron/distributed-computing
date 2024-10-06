@@ -3,6 +3,7 @@ package by.bsuir.jpatask.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import by.bsuir.jpatask.dto.request.TagRequestTo;
@@ -21,8 +22,8 @@ public class TagService {
     private final TagMapper TAG_MAPPER;
     private final TagRepository TAG_REPOSITORY;
 
-    public List<TagResponseTo> getAll() {
-        return TAG_REPOSITORY.findAll()
+    public List<TagResponseTo> getAll(Pageable restriction) {
+        return TAG_REPOSITORY.findAll(restriction)
                              .stream()
                              .map(TAG_MAPPER::toResponseTo)
                              .toList();

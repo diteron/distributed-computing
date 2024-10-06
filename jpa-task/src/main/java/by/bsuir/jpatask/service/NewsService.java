@@ -3,6 +3,7 @@ package by.bsuir.jpatask.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import by.bsuir.jpatask.dto.request.NewsRequestTo;
@@ -24,8 +25,8 @@ public class NewsService {
     private final NewsRepository NEWS_REPOSITORY;
     private final AuthorRepository AUTHOR_REPOSITORY;
 
-    public List<NewsResponseTo> getAll() {
-        return NEWS_REPOSITORY.findAll()
+    public List<NewsResponseTo> getAll(Pageable restriction) {
+        return NEWS_REPOSITORY.findAll(restriction)
                               .stream()
                               .map(NEWS_MAPPER::toResponseTo)
                               .toList();

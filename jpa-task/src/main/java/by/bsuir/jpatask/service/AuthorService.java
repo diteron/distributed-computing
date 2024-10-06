@@ -3,6 +3,7 @@ package by.bsuir.jpatask.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import by.bsuir.jpatask.dto.request.AuthorRequestTo;
@@ -21,8 +22,8 @@ public class AuthorService {
     private final AuthorMapper AUTHOR_MAPPER;
     private final AuthorRepository AUTHOR_REPOSITORY;
 
-    public List<AuthorResponseTo> getAll() {
-        return AUTHOR_REPOSITORY.findAll()
+    public List<AuthorResponseTo> getAll(Pageable restriction) {
+        return AUTHOR_REPOSITORY.findAll(restriction)
                                 .stream()
                                 .map(AUTHOR_MAPPER::toResponseTo)
                                 .toList();
