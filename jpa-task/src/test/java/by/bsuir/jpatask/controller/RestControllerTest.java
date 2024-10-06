@@ -15,8 +15,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("test")
 public abstract class RestControllerTest<RQ, RS> {
 
     protected static final Random RANDOM_NUMBER_GENERATOR = new Random();
