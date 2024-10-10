@@ -67,8 +67,8 @@ public class MessageService {
         UUID uuid = UUID.randomUUID();
 
         Message messageEntity = MESSAGE_MAPPER.toEntity(message);
-        messageEntity.getKey().setId(uuid.getMostSignificantBits()
-                                     ^ uuid.getLeastSignificantBits());
+        messageEntity.getKey().setId(Math.abs(uuid.getMostSignificantBits()
+                                              ^ uuid.getLeastSignificantBits()));
 
         return messageEntity;
     }
