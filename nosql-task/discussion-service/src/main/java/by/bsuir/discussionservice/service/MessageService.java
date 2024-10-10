@@ -39,7 +39,7 @@ public class MessageService {
 
     public MessageResponseTo save(MessageRequestTo message) {
         return Optional.of(message)
-                       .map(this::createMessageEntityWithId)
+                       .map(this::createMessageEntityWithGeneratedId)
                        .map(MESSAGE_REPOSITORY::save)
                        .map(MESSAGE_MAPPER::toResponseTo)
                        .orElseThrow(() -> 
@@ -48,11 +48,11 @@ public class MessageService {
 
     public MessageResponseTo update(MessageRequestTo message) {
         return MESSAGE_REPOSITORY.findByKey_Id(message.id())
-                                 .map(entity -> MESSAGE_MAPPER.updateEntity(entity, message))
+                                 .map(updatedEntity -> MESSAGE_MAPPER.updateEntity(updatedEntity, message))
                                  .map(MESSAGE_REPOSITORY::save)
                                  .map(MESSAGE_MAPPER::toResponseTo)
                                  .orElseThrow(() -> 
-                                     new EntityNotFoundException("Message", message.id()));
+                                     new EntityNotFoundException("Message", message.id())); 
     }
 
     public void delete(Long id) {
@@ -63,13 +63,12 @@ public class MessageService {
                                            });  
     }
 
-    private Message createMessageEntityWithId(MessageRequestTo message) {
+    private Message createMessageEntityWithGeneratedId(MessageRequestTo message) {
+        UUID uuid = UUID.randomUUID();
+
         Message messageEntity = MESSAGE_MAPPER.toEntity(message);
-        if (message.id() == null) {
-            UUID uuid = UUID.randomUUID();
-            messageEntity.getKey().setId(uuid.getMostSignificantBits()
-                                         ^ uuid.getLeastSignificantBits());
-        }
+        messageEntity.getKey().setId(uuid.getMostSignificantBits()
+                                     ^ uuid.getLeastSignificantBits());
 
         return messageEntity;
     }

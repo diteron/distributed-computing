@@ -21,6 +21,6 @@ public interface MessageMapper {
     @Mapping(target = "key.id", ignore = true)
     @Mapping(target = "key.newsId", source = "newsId")
     @Mapping(target = "key.country", source = "country")
-    Message updateEntity(@MappingTarget Message entity, MessageRequestTo updateRequest);
+    Message updateEntity(@MappingTarget Message updatedEntity, MessageRequestTo updateRequest);
 
 }
