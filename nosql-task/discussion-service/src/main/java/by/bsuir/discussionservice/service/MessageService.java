@@ -2,12 +2,14 @@ package by.bsuir.discussionservice.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import by.bsuir.discussionservice.dto.request.MessageRequestTo;
 import by.bsuir.discussionservice.dto.response.MessageResponseTo;
+import by.bsuir.discussionservice.entity.Message;
 import by.bsuir.discussionservice.exception.EntityNotFoundException;
 import by.bsuir.discussionservice.exception.EntityNotSavedException;
 import by.bsuir.discussionservice.mapper.MessageMapper;
@@ -37,7 +39,7 @@ public class MessageService {
 
     public MessageResponseTo save(MessageRequestTo message) {
         return Optional.of(message)
-                       .map(MESSAGE_MAPPER::toEntity)
+                       .map(this::createMessageEntityWithId)
                        .map(MESSAGE_REPOSITORY::save)
                        .map(MESSAGE_MAPPER::toResponseTo)
                        .orElseThrow(() -> 
@@ -59,5 +61,16 @@ public class MessageService {
                                            () -> { 
                                                throw new EntityNotFoundException("Message", id); 
                                            });  
+    }
+
+    private Message createMessageEntityWithId(MessageRequestTo message) {
+        Message messageEntity = MESSAGE_MAPPER.toEntity(message);
+        if (message.id() == null) {
+            UUID uuid = UUID.randomUUID();
+            messageEntity.getKey().setId(uuid.getMostSignificantBits()
+                                         ^ uuid.getLeastSignificantBits());
+        }
+
+        return messageEntity;
     }
 }

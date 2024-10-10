@@ -29,6 +29,7 @@ public class MessageControllerTest extends RestControllerTest<MessageRequestTo, 
     }
 
     private static Long createId() {
-        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        UUID uuid = UUID.randomUUID();
+        return uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits();
     }
 }
