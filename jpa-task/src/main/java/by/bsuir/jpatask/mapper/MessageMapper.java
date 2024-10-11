@@ -19,8 +19,8 @@ public interface MessageMapper {
     @Mapping(target = "newsId", source = "news.id")
     MessageResponseTo toResponseTo(Message entity);
     
-    @Mapping(target = "news", expression = "java(newsFromRequest)")
-    Message updateEntity(@MappingTarget Message entity, MessageRequestTo request,
-                         @Context News newsFromRequest);
+    @Mapping(target = "news", expression = "java(newsFromUpdateRequest)")
+    Message updateEntity(@MappingTarget Message entityToUpdate, MessageRequestTo updateRequest,
+                         @Context News newsFromUpdateRequest);
 
 }

@@ -56,7 +56,7 @@ public class NewsService {
                                                     .orElseThrow(() -> 
                                                         new EntityNotFoundException("Author", news.authorId()));
         return NEWS_REPOSITORY.findById(news.id())
-                              .map(entity -> NEWS_MAPPER.updateEntity(entity, news, authorFromRequest))
+                              .map(entityToUpdate -> NEWS_MAPPER.updateEntity(entityToUpdate, news, authorFromRequest))
                               .map(NEWS_REPOSITORY::save)
                               .map(NEWS_MAPPER::toResponseTo)
                               .orElseThrow(() -> 

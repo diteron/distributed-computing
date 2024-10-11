@@ -50,7 +50,7 @@ public class NewsService {
     public NewsResponseTo update(NewsRequestTo news) {
         checkAuthorExistence(news.authorId());
         return NEWS_REPOSITORY.findById(news.id())
-                              .map(entity -> NEWS_MAPPER.updateEntity(entity, news))
+                              .map(entityToUpdate -> NEWS_MAPPER.updateEntity(entityToUpdate, news))
                               .map(NEWS_REPOSITORY::save)
                               .map(NEWS_MAPPER::toResponseTo)
                               .orElseThrow(() -> 

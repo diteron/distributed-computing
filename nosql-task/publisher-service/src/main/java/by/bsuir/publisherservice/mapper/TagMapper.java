@@ -16,5 +16,5 @@ public interface TagMapper {
     TagResponseTo toResponseTo(Tag entity);
     
     @Mapping(target = "id", ignore = true)
-    Tag updateEntity(@MappingTarget Tag entity, TagRequestTo request);
+    Tag updateEntity(@MappingTarget Tag entityToUpdate, TagRequestTo updateRequest);
 }

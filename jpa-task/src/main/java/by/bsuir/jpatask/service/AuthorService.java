@@ -47,7 +47,7 @@ public class AuthorService {
 
     public AuthorResponseTo update(AuthorRequestTo author) {
         return AUTHOR_REPOSITORY.findById(author.id())
-                                .map(entity -> AUTHOR_MAPPER.updateEntity(entity, author))
+                                .map(entityToUpdate -> AUTHOR_MAPPER.updateEntity(entityToUpdate, author))
                                 .map(AUTHOR_REPOSITORY::save)
                                 .map(AUTHOR_MAPPER::toResponseTo)
                                 .orElseThrow(() -> 

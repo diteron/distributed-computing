@@ -18,5 +18,5 @@ public interface NewsMapper {
     
     @Mapping(target = "timeCreated", ignore = true)
     @Mapping(target = "timeModified", expression = "java(java.time.LocalDateTime.now())")
-    News updateEntity(@MappingTarget News entity, NewsRequestTo request);
+    News updateEntity(@MappingTarget News entityToUpdate, NewsRequestTo updateRequest);
 }

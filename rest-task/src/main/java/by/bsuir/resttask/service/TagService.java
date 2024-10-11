@@ -46,7 +46,7 @@ public class TagService {
 
     public TagResponseTo update(TagRequestTo tag) {
         return TAG_REPOSITORY.findById(tag.id())
-                             .map(entity -> TAG_MAPPER.updateEntity(entity, tag))
+                             .map(entityToUpdate -> TAG_MAPPER.updateEntity(entityToUpdate, tag))
                              .map(TAG_REPOSITORY::save)
                              .map(TAG_MAPPER::toResponseTo)
                              .orElseThrow(() -> 

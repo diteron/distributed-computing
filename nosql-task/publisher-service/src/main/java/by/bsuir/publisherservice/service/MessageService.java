@@ -59,8 +59,8 @@ public class MessageService {
         }
 
         return Optional.of(message)
-                       .map(messageRequest -> DISCUSSION_SERVICE_MAPPER
-                                             .toDiscussionServiceRequestTo(messageRequest, country))
+                       .map(updateRequest -> DISCUSSION_SERVICE_MAPPER
+                                             .toDiscussionServiceRequestTo(updateRequest, country))
                        .map(DISCUSSION_SERVICE::updateMessage)
                        .orElseThrow(() -> new EntityNotFoundException("Message", message.id()));
     }

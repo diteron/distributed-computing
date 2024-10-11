@@ -20,9 +20,9 @@ public interface NewsMapper {
     @Mapping(target = "authorId", source = "author.id")
     NewsResponseTo toResponseTo(News entity);
 
-    @Mapping(target = "author", expression = "java(authorFromRequest)")
+    @Mapping(target = "author", expression = "java(authorFromUpdateRequest)")
     @Mapping(target = "timeCreated", ignore = true)
     @Mapping(target = "timeModified", expression = "java(java.time.LocalDateTime.now())")
-    News updateEntity(@MappingTarget News entity, NewsRequestTo request,
-                      @Context Author authorFromRequest);
+    News updateEntity(@MappingTarget News entityToUpdate, NewsRequestTo updateRequest,
+                      @Context Author authorFromUpdateRequest);
 }

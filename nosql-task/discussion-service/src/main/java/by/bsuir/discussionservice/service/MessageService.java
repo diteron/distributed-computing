@@ -48,7 +48,7 @@ public class MessageService {
 
     public MessageResponseTo update(MessageRequestTo message) {
         return MESSAGE_REPOSITORY.findByKey_Id(message.id())
-                                 .map(updatedEntity -> MESSAGE_MAPPER.updateEntity(updatedEntity, message))
+                                 .map(entityToUpdate -> MESSAGE_MAPPER.updateEntity(entityToUpdate, message))
                                  .map(MESSAGE_REPOSITORY::save)
                                  .map(MESSAGE_MAPPER::toResponseTo)
                                  .orElseThrow(() -> 

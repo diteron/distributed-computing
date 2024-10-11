@@ -11,5 +11,5 @@ import org.mapstruct.MappingTarget;
 public interface MessageMapper {
     Message toEntity(MessageRequestTo request);
     MessageResponseTo toResponseTo(Message entity);
-    Message updateEntity(@MappingTarget Message entity, MessageRequestTo request);
+    Message updateEntity(@MappingTarget Message entityToUpdate, MessageRequestTo updateRequest);
 }

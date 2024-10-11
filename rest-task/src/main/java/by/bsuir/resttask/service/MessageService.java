@@ -50,7 +50,7 @@ public class MessageService {
     public MessageResponseTo update(MessageRequestTo message) {
         checkNewsExistence(message.newsId());
         return MESSAGE_REPOSITORY.findById(message.id())
-                                 .map(entity -> MESSAGE_MAPPER.updateEntity(entity, message))
+                                 .map(entityToUpdate -> MESSAGE_MAPPER.updateEntity(entityToUpdate, message))
                                  .map(MESSAGE_REPOSITORY::save)
                                  .map(MESSAGE_MAPPER::toResponseTo)
                                  .orElseThrow(() -> 

@@ -16,5 +16,5 @@ public interface AuthorMapper {
     AuthorResponseTo toResponseTo(Author entity);
     
     @Mapping(target = "id", ignore = true)
-    Author updateEntity(@MappingTarget Author entity, AuthorRequestTo request);
+    Author updateEntity(@MappingTarget Author entityToUpdate, AuthorRequestTo updateRequest);
 }

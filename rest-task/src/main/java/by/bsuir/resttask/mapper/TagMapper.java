@@ -11,5 +11,5 @@ import org.mapstruct.MappingTarget;
 public interface TagMapper {
     Tag toEntity(TagRequestTo request);
     TagResponseTo toResponseTo(Tag entity);
-    Tag updateEntity(@MappingTarget Tag entity, TagRequestTo request);
+    Tag updateEntity(@MappingTarget Tag entityToUpdate, TagRequestTo updateRequest);
 }

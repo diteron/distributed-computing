@@ -55,7 +55,7 @@ public class MessageService {
                                               .orElseThrow(() -> 
                                                  new EntityNotFoundException("News", message.newsId()));
         return MESSAGE_REPOSITORY.findById(message.id())
-                                 .map(entity -> MESSAGE_MAPPER.updateEntity(entity, message, newsFromRequest))
+                                 .map(entityToUpdate -> MESSAGE_MAPPER.updateEntity(entityToUpdate, message, newsFromRequest))
                                  .map(MESSAGE_REPOSITORY::save)
                                  .map(MESSAGE_MAPPER::toResponseTo)
                                  .orElseThrow(() -> 
