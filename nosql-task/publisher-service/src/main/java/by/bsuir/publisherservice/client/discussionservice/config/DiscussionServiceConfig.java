@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,11 +14,13 @@ import by.bsuir.publisherservice.client.discussionservice.DiscussionServiceClien
 
 @Configuration
 public class DiscussionServiceConfig {
-
+    @Autowired
+    private Environment env;
+    
     @Bean
     RestClient restClient(ObjectMapper objectMapper) {
         return RestClient.builder()
-                         .baseUrl("http://localhost:24130/api/v1.0")
+                         .baseUrl(env.getProperty("rest-client.url"))
                          .build();
     }
 
