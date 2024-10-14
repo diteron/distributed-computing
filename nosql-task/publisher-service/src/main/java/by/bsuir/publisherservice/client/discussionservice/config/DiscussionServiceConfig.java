@@ -20,7 +20,7 @@ public class DiscussionServiceConfig {
     @Bean
     RestClient restClient(ObjectMapper objectMapper) {
         return RestClient.builder()
-                         .baseUrl(env.getProperty("rest-client.url"))
+                         .baseUrl(env.getProperty("rest-client.base-url", "http://localhost:24130/api/v1.0"))
                          .build();
     }
 
