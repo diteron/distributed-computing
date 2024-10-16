@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 public interface DiscussionServiceClient {
 
     @GetExchange("/{id}")
-    @ResponseStatus(HttpStatus.OK)      // TODO: Check if the responce statuses are needed
+    @ResponseStatus(HttpStatus.OK)
     public MessageResponseTo getMessageById(@PathVariable Long id);
 
     @GetExchange
