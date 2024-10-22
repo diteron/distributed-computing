@@ -38,6 +38,9 @@ public class Message {
         
         @PrimaryKeyColumn(name = "news_id", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
         private Long newsId;
+
+        @PrimaryKeyColumn(name = "state", ordinal = 3, type = PrimaryKeyType.CLUSTERED)
+        private MessageState state;
     }
 
     @PrimaryKey

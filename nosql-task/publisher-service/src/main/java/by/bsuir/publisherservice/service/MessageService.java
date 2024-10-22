@@ -29,15 +29,12 @@ public class MessageService {
     }
 
     public MessageResponseTo getById(Long id) {
-        MessageResponseTo response;
         try {
-            response = DISCUSSION_SERVICE.getMessageById(id);
+            return DISCUSSION_SERVICE.getMessageById(id);  
         } 
         catch (HttpClientErrorException.NotFound e) {
             throw new EntityNotFoundException("Message", id);
-        }
-
-        return response;    
+        }     
     }
 
     public MessageResponseTo save(MessageRequestTo message, String country) {

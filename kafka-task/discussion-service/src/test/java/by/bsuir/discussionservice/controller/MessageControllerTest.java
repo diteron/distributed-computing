@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import by.bsuir.discussionservice.dto.request.MessageRequestTo;
 import by.bsuir.discussionservice.dto.response.MessageResponseTo;
+import by.bsuir.discussionservice.entity.MessageState;
 
 public class MessageControllerTest extends RestControllerTest<MessageRequestTo, MessageResponseTo> {
     private static final Long FK_NEWS_ID = 123L;
@@ -12,7 +13,8 @@ public class MessageControllerTest extends RestControllerTest<MessageRequestTo, 
     protected MessageRequestTo getRequestTo() {
         return new MessageRequestTo(createId(), FK_NEWS_ID,
                                     "Test content" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                    "Test country");
+                                    "Test country",
+                                    MessageState.PENDING);
     }
 
     @Override
@@ -20,7 +22,8 @@ public class MessageControllerTest extends RestControllerTest<MessageRequestTo, 
         return new MessageRequestTo(updateEntityId,
                                     originalRequest.newsId(),
                                     "Test content" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                    "Test country");
+                                    "Test country",
+                                    MessageState.PENDING);
     }
 
     @Override

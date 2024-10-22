@@ -1,8 +1,12 @@
 package by.bsuir.publisherservice.client.discussionservice.dto.request;
 
+import by.bsuir.publisherservice.dto.MessageState;
+import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
+@Builder
 public record DiscussionServiceMessageRequestTo(
     Long id,
     Long newsId,
@@ -12,7 +16,10 @@ public record DiscussionServiceMessageRequestTo(
     String content,
 
     @NotNull
-    String country
+    String country,
+
+    @NonNull
+    MessageState state
 ) {
 
 }

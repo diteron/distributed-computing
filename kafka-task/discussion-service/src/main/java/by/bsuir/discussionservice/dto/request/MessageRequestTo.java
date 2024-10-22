@@ -1,5 +1,6 @@
 package by.bsuir.discussionservice.dto.request;
 
+import by.bsuir.discussionservice.entity.MessageState;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -12,7 +13,10 @@ public record MessageRequestTo(
     String content,
 
     @NotNull
-    String country
+    String country,
+
+    @NotNull
+    MessageState state
 ) {
 
 }
