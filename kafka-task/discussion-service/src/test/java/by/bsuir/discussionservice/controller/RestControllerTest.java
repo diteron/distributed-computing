@@ -23,6 +23,10 @@ public abstract class RestControllerTest<RQ, RS> {
 
     protected static final Random RANDOM_NUMBER_GENERATOR = new Random();
 
+    protected abstract RQ getRequestTo();
+    protected abstract RQ getUpdateRequestTo(RQ originalRequest, Long updateEntityId);
+    protected abstract String getRequestsMappingPath();
+
     @BeforeAll
     public static void setup() {
         String port = System.getProperty("server.port");
@@ -167,10 +171,6 @@ public abstract class RestControllerTest<RQ, RS> {
         deleteEntity(responseEntityId);
     }
 
-    protected abstract RQ getRequestTo();
-    protected abstract RQ getUpdateRequestTo(RQ originalRequest, Long updateEntityId);
-    protected abstract String getRequestsMappingPath();
-
     protected Response saveRequest(RQ request) {
         return given()
                .contentType(ContentType.JSON)
@@ -178,6 +178,13 @@ public abstract class RestControllerTest<RQ, RS> {
                .post(getRequestsMappingPath());
     }
     
+    protected Response updateRequest(RQ request) {
+        return given()
+               .contentType(ContentType.JSON)
+               .body(request)
+               .put(getRequestsMappingPath());
+    }
+
     protected List<Response> saveRequests(List<RQ> requests) {
         List<Response> saveResponses = new ArrayList<>();
         for (var request : requests) {

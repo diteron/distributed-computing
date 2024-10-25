@@ -99,8 +99,6 @@ public class DiscussionServiceKafkaClient implements DiscussionServiceClient {
                         .build()
             )
         ).filter(ResponseTopicMessage::isSuccessful)
-                .map(ResponseTopicMessage::response)
-                .map(List::getFirst)
                 .orElseThrow(() -> new DiscussionServiceIncorrectRequestException());
     }
 

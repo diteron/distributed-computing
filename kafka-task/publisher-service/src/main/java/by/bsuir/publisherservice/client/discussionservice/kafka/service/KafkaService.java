@@ -12,6 +12,7 @@ import by.bsuir.publisherservice.client.discussionservice.kafka.exception.Discus
 import by.bsuir.publisherservice.client.discussionservice.kafka.message.RequestTopicMessage;
 import by.bsuir.publisherservice.client.discussionservice.kafka.message.ResponseTopicMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KafkaService {
 
     @Value("${topic.news-message.request}")
@@ -27,21 +29,33 @@ public class KafkaService {
     private final ReplyingKafkaTemplate<String, RequestTopicMessage, ResponseTopicMessage> REPLYING_KAFKA_TEMPLATE;
 
     public ResponseTopicMessage sendAndRecieve(RequestTopicMessage topicMessage) {
-        String recordKey = topicMessage.requestMessage().newsId().toString();    // Key to determine a partition by Kafka
+        log.info("Sending request message: {}", topicMessage);
+
+        // Key to determine a partition by Kafka
+        String recordKey = 
+                topicMessage.requestMessage() != null && topicMessage.requestMessage().newsId() != null
+                ? topicMessage.requestMessage().newsId().toString()
+                : null;
         ProducerRecord<String, RequestTopicMessage> record = 
                 new ProducerRecord<>(REQUEST_TOPIC, recordKey, topicMessage);
         RequestReplyFuture<String, RequestTopicMessage, ResponseTopicMessage> replyFuture = 
                 REPLYING_KAFKA_TEMPLATE.sendAndReceive(record);
                 
         try {
-            ConsumerRecord<String, ResponseTopicMessage> consumerRecord = replyFuture.get(1, TimeUnit.SECONDS);
+            ConsumerRecord<String, ResponseTopicMessage> consumerRecord = replyFuture.get(3, TimeUnit.SECONDS);
+            log.info("Recieved response message: {}", consumerRecord.value());
             return consumerRecord.value();
         }
         catch (TimeoutException e) {
             throw new DiscussionServiceTimeoutException("Timeout while trying to get response");
         }
-        catch (ExecutionException | InterruptedException e) {
-            throw new DiscussionServiceResponseException("Unexpected error occured while trying to get response");
+        catch (ExecutionException e) {
+            throw new DiscussionServiceResponseException("Unexpected error occured while trying to get response: "
+                     + e.getMessage());
+        }
+        catch (InterruptedException e) {
+            throw new DiscussionServiceResponseException("Unexpected error occured while trying to get response: "
+                     + e.getMessage());
         }
     }
 

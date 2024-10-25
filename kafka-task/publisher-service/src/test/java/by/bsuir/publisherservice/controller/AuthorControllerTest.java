@@ -8,20 +8,20 @@ public class AuthorControllerTest extends RestControllerTest<AuthorRequestTo, Au
     @Override
     protected AuthorRequestTo getRequestTo() {
         return new AuthorRequestTo(null,
-                                   "login"     + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                   "password"  + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                   "firstname" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                   "lastname"  + RANDOM_NUMBER_GENERATOR.nextInt());
+                                   "login"     + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                   "password"  + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                   "firstname" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                   "lastname"  + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override
     protected AuthorRequestTo getUpdateRequestTo(AuthorRequestTo originalRequest, Long updateEntityId) {
         return new AuthorRequestTo(
                     updateEntityId,
-                    originalRequest.login()     + RANDOM_NUMBER_GENERATOR.nextInt(),
-                    originalRequest.password()  + RANDOM_NUMBER_GENERATOR.nextInt(),
-                    originalRequest.firstname() + RANDOM_NUMBER_GENERATOR.nextInt(),
-                    originalRequest.lastname()  + RANDOM_NUMBER_GENERATOR.nextInt());
+                    originalRequest.login()     + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                    originalRequest.password()  + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                    originalRequest.firstname() + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                    originalRequest.lastname()  + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override

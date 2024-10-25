@@ -22,16 +22,16 @@ public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsRe
     protected NewsRequestTo getRequestTo() {
         createForeignKeyEntitiesIfNotCreated();
         return new NewsRequestTo(null, fkAuthorId,
-                                 "title"   + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                 "content" + RANDOM_NUMBER_GENERATOR.nextInt());
+                                 "title"   + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                 "content" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override
     protected NewsRequestTo getUpdateRequestTo(NewsRequestTo originalRequest, Long updateEntityId) {
         return new NewsRequestTo(updateEntityId,
                                  originalRequest.authorId(),
-                                 "title"   + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                 "content" + RANDOM_NUMBER_GENERATOR.nextInt());
+                                 "title"   + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                 "content" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override
@@ -42,10 +42,10 @@ public class NewsControllerTest extends RestControllerTest<NewsRequestTo, NewsRe
     private void createForeignKeyEntitiesIfNotCreated() {
         if (!isForeignKeyEntitiesCreated) {
             AuthorRequestTo author = new AuthorRequestTo(null,
-                                                         "login" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                                         "password" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                                         "firstame" + RANDOM_NUMBER_GENERATOR.nextInt(),
-                                                         "lastname" + RANDOM_NUMBER_GENERATOR.nextInt());
+                                                         "login" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                                         "password" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                                         "firstame" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE),
+                                                         "lastname" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
             Response authResponse = createForeignKeyEntity(author, "/authors");                                                     
             fkAuthorId = getResponseId(authResponse);
 

@@ -22,6 +22,7 @@ public class MessageService {
 
     private final MessageMapper MESSAGE_MAPPER;
     private final MessageRepository MESSAGE_REPOSITORY;
+    private final MessageModerator MESSAGE_MODERATOR;
 
     public List<MessageResponseTo> getAll(Pageable restriction) {
         return MESSAGE_REPOSITORY.findAll(restriction)
@@ -40,6 +41,7 @@ public class MessageService {
     public MessageResponseTo save(MessageRequestTo message) {
         return Optional.of(message)
                        .map(this::createMessageEntityWithGeneratedId)
+                       .map(MESSAGE_MODERATOR::moderateMessage)
                        .map(MESSAGE_REPOSITORY::save)
                        .map(MESSAGE_MAPPER::toResponseTo)
                        .orElseThrow(() -> 
@@ -49,6 +51,7 @@ public class MessageService {
     public MessageResponseTo update(MessageRequestTo message) {
         return MESSAGE_REPOSITORY.findByKey_Id(message.id())
                                  .map(entityToUpdate -> MESSAGE_MAPPER.updateEntity(entityToUpdate, message))
+                                 .map(MESSAGE_MODERATOR::moderateMessage)
                                  .map(MESSAGE_REPOSITORY::save)
                                  .map(MESSAGE_MAPPER::toResponseTo)
                                  .orElseThrow(() -> 

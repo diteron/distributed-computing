@@ -7,13 +7,13 @@ public class TagControllerTest extends RestControllerTest<TagRequestTo, TagRespo
 
     @Override
     protected TagRequestTo getRequestTo() {
-        return new TagRequestTo(null, "tag" + RANDOM_NUMBER_GENERATOR.nextInt());
+        return new TagRequestTo(null, "tag" + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override
     protected TagRequestTo getUpdateRequestTo(TagRequestTo originalRequest, Long updateEntityId) {
         return new TagRequestTo(updateEntityId,
-                                originalRequest.name() + RANDOM_NUMBER_GENERATOR.nextInt());
+                                originalRequest.name() + RANDOM_NUMBER_GENERATOR.nextInt(Integer.MAX_VALUE));
     }
 
     @Override
