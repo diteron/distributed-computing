@@ -13,6 +13,7 @@
         <tagDatabase tag="v.0.0.1"/>
     </changeSet>
     
-    <includeAll path="changes" relativeToChangelogFile="true"/>
+    <include file="changes/create-table-message.xml" relativeToChangelogFile="true"/>
+    <include file="changes/add-state-column.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
