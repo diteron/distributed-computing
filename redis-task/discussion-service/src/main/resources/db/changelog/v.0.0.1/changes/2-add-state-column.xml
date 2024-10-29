@@ -8,11 +8,11 @@
                                        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd 
                                        http://www.liquibase.org/xml/ns/dbchangelog 
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">                               
-    
-    <changeSet id="Add tag v.0.0.1" author="diteron">
-        <tagDatabase tag="v.0.0.1"/>
+
+    <changeSet author="diteron" id="Add state column">
+        <sql>
+            ALTER TABLE distcomp.tbl_message ADD state text;
+        </sql>
     </changeSet>
-    
-    <includeAll path="changes/" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

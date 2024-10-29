@@ -3,6 +3,10 @@ package by.bsuir.publisherservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +18,11 @@ import by.bsuir.publisherservice.exception.EntityNotSavedException;
 import by.bsuir.publisherservice.mapper.NewsMapper;
 import by.bsuir.publisherservice.repository.AuthorRepository;
 import by.bsuir.publisherservice.repository.NewsRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "news")
 public class NewsService {
 
     private final NewsMapper NEWS_MAPPER;
@@ -32,6 +36,7 @@ public class NewsService {
                               .toList();
     }
 
+    @Cacheable(key = "#id")
     public NewsResponseTo getById(Long id) {
         return NEWS_REPOSITORY.findById(id)
                               .map(NEWS_MAPPER::toResponseTo)
@@ -51,6 +56,7 @@ public class NewsService {
                            new EntityNotSavedException("News", news.id()));
     }
 
+    @CachePut(key = "#news.id")
     public NewsResponseTo update(NewsRequestTo news) {
         Author authorFromRequest = AUTHOR_REPOSITORY.findById(news.authorId())
                                                     .orElseThrow(() -> 
@@ -63,6 +69,7 @@ public class NewsService {
                                   new EntityNotFoundException("News", news.id()));
     }
 
+    @CacheEvict(key = "#id", beforeInvocation = true)
     public void delete(Long id) {
         NEWS_REPOSITORY.findById(id)
                        .ifPresentOrElse(NEWS_REPOSITORY::delete,

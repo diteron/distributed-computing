@@ -3,6 +3,10 @@ package by.bsuir.publisherservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +16,11 @@ import by.bsuir.publisherservice.exception.EntityNotFoundException;
 import by.bsuir.publisherservice.exception.EntityNotSavedException;
 import by.bsuir.publisherservice.mapper.AuthorMapper;
 import by.bsuir.publisherservice.repository.AuthorRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "author")
 public class AuthorService {
 
     private final AuthorMapper AUTHOR_MAPPER;
@@ -29,6 +33,7 @@ public class AuthorService {
                                 .toList();
     }
 
+    @Cacheable(key = "#id")
     public AuthorResponseTo getById(Long id) {
         return AUTHOR_REPOSITORY.findById(id)
                                 .map(AUTHOR_MAPPER::toResponseTo)
@@ -45,6 +50,7 @@ public class AuthorService {
                            new EntityNotSavedException("Author", author.id()));
     }
 
+    @CachePut(key = "#author.id")
     public AuthorResponseTo update(AuthorRequestTo author) {
         return AUTHOR_REPOSITORY.findById(author.id())
                                 .map(entityToUpdate -> AUTHOR_MAPPER.updateEntity(entityToUpdate, author))
@@ -54,6 +60,7 @@ public class AuthorService {
                                     new EntityNotFoundException("Author", author.id()));
     }
 
+    @CacheEvict(key = "#id", beforeInvocation = true)
     public void delete(Long id) {
         AUTHOR_REPOSITORY.findById(id)
                          .ifPresentOrElse(AUTHOR_REPOSITORY::delete,

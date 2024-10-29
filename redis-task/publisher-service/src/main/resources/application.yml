@@ -3,14 +3,21 @@ server:
   servlet:
     context-path: /api/v1.0    
 
+logging:
+  level:
+    "[org.springframework.cache]": DEBUG
+    "[org.springframework.boot.autoconfigure.cache]": DEBUG
+
 spring:
   application:
     name: publisher-service
 
-  cache:
-    type: redis
+  data.redis:
     host: localhost
     port: 6379
+
+  cache:
+    type: redis
     redis:
       time-to-live: 60000
 
@@ -38,11 +45,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         "[spring.json]":
-            "[type.mapping]": ResponseTopicMessage:by.bsuir.publisherservice.client.discussionservice.kafka.message.ResponseTopicMessage
+            "[type.mapping]": 
+              ResponseTopicMessage:by.bsuir.publisherservice.client.discussionservice.kafka.message.ResponseTopicMessage
             "[trusted.packages]":
               by.bsuir.discussionservice.kafka.message.*,
-              by.bsuir.publisherservice.client.discussionservice.kafka.message.*,
-              java.util,java.lang
+              by.bsuir.publisherservice.client.discussionservice.kafka.message.*
 
 topic:
   news-message:

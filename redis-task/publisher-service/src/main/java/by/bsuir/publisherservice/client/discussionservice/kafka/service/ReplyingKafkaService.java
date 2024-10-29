@@ -21,29 +21,26 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class KafkaService {
+public class ReplyingKafkaService {
 
     @Value("${topic.news-message.request}")
     private String REQUEST_TOPIC;
 
+    @Value("${topic.news-message.response}")
+    private String RESPONSE_TOPIC;
+
     private final ReplyingKafkaTemplate<String, RequestTopicMessage, ResponseTopicMessage> REPLYING_KAFKA_TEMPLATE;
 
     public ResponseTopicMessage sendAndRecieve(RequestTopicMessage topicMessage) {
-        log.info("Sending request message: {}", topicMessage);
+        log.info("{} -- Sending request message: {}", REQUEST_TOPIC, topicMessage);
 
-        // Key to determine a partition by Kafka
-        String recordKey = 
-                topicMessage.requestMessage() != null && topicMessage.requestMessage().newsId() != null
-                ? topicMessage.requestMessage().newsId().toString()
-                : null;
-        ProducerRecord<String, RequestTopicMessage> record = 
-                new ProducerRecord<>(REQUEST_TOPIC, recordKey, topicMessage);
+        ProducerRecord<String, RequestTopicMessage> record = createRecord(topicMessage);
         RequestReplyFuture<String, RequestTopicMessage, ResponseTopicMessage> replyFuture = 
                 REPLYING_KAFKA_TEMPLATE.sendAndReceive(record);
                 
         try {
             ConsumerRecord<String, ResponseTopicMessage> consumerRecord = replyFuture.get(3, TimeUnit.SECONDS);
-            log.info("Recieved response message: {}", consumerRecord.value());
+            log.info("{} -- Recieved response message: {}", RESPONSE_TOPIC, consumerRecord.value());
             return consumerRecord.value();
         }
         catch (TimeoutException e) {
@@ -57,6 +54,16 @@ public class KafkaService {
             throw new DiscussionServiceResponseException("Unexpected error occured while trying to get response: "
                      + e.getMessage());
         }
+    }
+
+    private ProducerRecord<String, RequestTopicMessage> createRecord(RequestTopicMessage topicMessage) {
+        // Key to determine a partition by Kafka
+        String recordKey = 
+                topicMessage.requestMessage() != null && topicMessage.requestMessage().newsId() != null
+                ? topicMessage.requestMessage().newsId().toString()
+                : null;
+
+        return new ProducerRecord<>(REQUEST_TOPIC, recordKey, topicMessage);
     }
 
 }

@@ -1,4 +1,17 @@
-services:     
+services:
+  redis:
+    container_name: redis
+    image: redis:7.4.1
+    hostname: redis
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      start_period: 15s
+      interval: 30s
+      timeout: 15s
+      retries: 3
+
   kafka:
     image: apache/kafka:3.9.0-rc2
     container_name: kafka
@@ -6,6 +19,9 @@ services:
     hostname: kafka
     ports:
       - 9092:9092
+    depends_on:
+      redis:
+        condition: service_healthy
     environment:
       KAFKA_PROCESS_ROLES: broker, controller
       KAFKA_BROKER_ID: 1
@@ -73,6 +89,7 @@ services:
       dockerfile: Dockerfile
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_DATA_REDIS_HOST: redis
       SPRING_DATASOURCE_URL: jdbc:postgresql://publisher-service-db:5432/distcomp
     healthcheck:
       test: ["CMD-SHELL", "nc -zv publisher-service 24110"]

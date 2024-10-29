@@ -2,6 +2,10 @@ package by.bsuir.publisherservice.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "message")
 public class MessageService {
 
     private final DiscussionServiceMessageMapper DISCUSSION_SERVICE_MAPPER;
@@ -29,6 +34,7 @@ public class MessageService {
                                                  restriction.getPageSize());
     }
 
+    @Cacheable(key = "#id")
     public MessageResponseTo getById(Long id) {
         try {
             return DISCUSSION_SERVICE.getMessageById(id);  
@@ -51,6 +57,7 @@ public class MessageService {
         }
     }
 
+    @CachePut(key = "#message.id")
     public MessageResponseTo update(MessageRequestTo message, String country) {
         checkIfMessageExists(message.id());
         checkIfNewsExist(message.newsId());
@@ -64,6 +71,7 @@ public class MessageService {
         }
     }
 
+    @CacheEvict(key = "#id", beforeInvocation = true)
     public void delete(Long id) {
         checkIfMessageExists(id);
         DISCUSSION_SERVICE.deleteMessage(id);

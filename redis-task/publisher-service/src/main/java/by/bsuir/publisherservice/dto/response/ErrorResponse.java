@@ -2,8 +2,10 @@ package by.bsuir.publisherservice.dto.response;
 
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
-public record ErrorResponse(String message, Integer errorCode) {
+public record ErrorResponse(String errorMessage, Integer errorCode) implements Serializable {
     public static class ErrorResponseBuilder {
         public ErrorResponseBuilder httpStatusCode(Integer httpStatusCode) {
             this.errorCode = httpStatusCode * 100;

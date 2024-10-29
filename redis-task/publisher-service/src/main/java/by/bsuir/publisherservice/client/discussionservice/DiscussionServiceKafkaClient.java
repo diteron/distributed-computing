@@ -9,7 +9,7 @@ import by.bsuir.publisherservice.client.discussionservice.dto.request.Discussion
 import by.bsuir.publisherservice.client.discussionservice.kafka.message.DiscussionServiceOperation;
 import by.bsuir.publisherservice.client.discussionservice.kafka.message.RequestTopicMessage;
 import by.bsuir.publisherservice.client.discussionservice.kafka.message.ResponseTopicMessage;
-import by.bsuir.publisherservice.client.discussionservice.kafka.service.KafkaService;
+import by.bsuir.publisherservice.client.discussionservice.kafka.service.ReplyingKafkaService;
 import by.bsuir.publisherservice.dto.response.MessageResponseTo;
 import by.bsuir.publisherservice.exception.DiscussionServiceIncorrectRequestException;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DiscussionServiceKafkaClient implements DiscussionServiceClient {
-    private final KafkaService KAFKA_SERVICE;
+    private final ReplyingKafkaService KAFKA_SERVICE;
 
     @Override
     public MessageResponseTo getMessageById(Long id) {

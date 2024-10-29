@@ -3,6 +3,10 @@ package by.bsuir.publisherservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +16,11 @@ import by.bsuir.publisherservice.exception.EntityNotFoundException;
 import by.bsuir.publisherservice.exception.EntityNotSavedException;
 import by.bsuir.publisherservice.mapper.TagMapper;
 import by.bsuir.publisherservice.repository.TagRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "tag")
 public class TagService {
 
     private final TagMapper TAG_MAPPER;
@@ -29,6 +33,7 @@ public class TagService {
                              .toList();
     }
 
+    @Cacheable(key = "#id")
     public TagResponseTo getById(Long id) {
         return TAG_REPOSITORY.findById(id)
                              .map(TAG_MAPPER::toResponseTo)
@@ -45,6 +50,7 @@ public class TagService {
                            new EntityNotSavedException("Tag", tag.id()));
     }
 
+    @CachePut(key = "#tag.id")
     public TagResponseTo update(TagRequestTo tag) {
         return TAG_REPOSITORY.findById(tag.id())
                              .map(entityToUpdate -> TAG_MAPPER.updateEntity(entityToUpdate, tag))
@@ -54,6 +60,7 @@ public class TagService {
                                  new EntityNotFoundException("Tag", tag.id()));
     }
 
+    @CacheEvict(key = "#id", beforeInvocation = true)
     public void delete(Long id) {
         TAG_REPOSITORY.findById(id)
                       .ifPresentOrElse(TAG_REPOSITORY::delete,
