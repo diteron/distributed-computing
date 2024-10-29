@@ -34,7 +34,7 @@ public class PublisherServiceExceptionHandler {
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception e, HttpStatus httpStatus, Integer restTaskCode) {
         return ResponseEntity.status(httpStatus)
                              .body(ErrorResponse.builder()
-                                                .message(e.getMessage())
+                                                .errorMessage(e.getMessage())
                                                 .httpStatusCode(httpStatus.value())
                                                 .restTaskCode(restTaskCode)
                                                 .build());

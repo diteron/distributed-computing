@@ -3,7 +3,7 @@ package by.bsuir.publisherservice.dto.response;
 import lombok.Builder;
 
 @Builder
-public record ErrorResponse(String message, Integer errorCode) {
+public record ErrorResponse(String errorMessage, Integer errorCode) {
     public static class ErrorResponseBuilder {
         public ErrorResponseBuilder httpStatusCode(Integer httpStatusCode) {
             this.errorCode = httpStatusCode * 100;
