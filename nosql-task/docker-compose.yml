@@ -55,8 +55,8 @@ services:
     command: /bin/bash -c "echo Creating distcomp keyspace && cqlsh discussion-service-db -f /docker-entrypoint-initdb.d/create_keyspace.cql"
   
   discussion-service:
-    image: discussion-service:0.0.1-SNAPSHOT
-    container_name: discussion-service
+    image: discussion-service-nosql:0.0.1-SNAPSHOT
+    container_name: discussion-service-nosql
     restart: unless-stopped
     hostname: discussion-service
     ports:
@@ -78,8 +78,8 @@ services:
       SPRING_LIQUIBASE_URL: jdbc:cassandra://discussion-service-db:9042/distcomp?localdatacenter=datacenter1&compliancemode=Liquibase
   
   publisher-service:
-    image: publisher-service:0.0.1-SNAPSHOT
-    container_name: publisher-service
+    image: publisher-service-nosql:0.0.1-SNAPSHOT
+    container_name: publisher-service-nosql
     ports:
       - "24110:24110"
     depends_on:

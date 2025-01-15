@@ -60,8 +60,8 @@ services:
       retries: 3
   
   publisher-service:
-    image: publisher-service:0.0.1-SNAPSHOT
-    container_name: publisher-service
+    image: publisher-service-kafka:0.0.1-SNAPSHOT
+    container_name: publisher-service-kafka
     restart: unless-stopped
     ports:
       - "24110:24110"
@@ -118,8 +118,8 @@ services:
     command: /bin/bash -c "echo Creating distcomp keyspace && cqlsh discussion-service-db -f /docker-entrypoint-initdb.d/create_keyspace.cql"
   
   discussion-service:
-    image: discussion-service:0.0.1-SNAPSHOT
-    container_name: discussion-service
+    image: discussion-service-kafka:0.0.1-SNAPSHOT
+    container_name: discussion-service-kafka
     restart: unless-stopped
     hostname: discussion-service
     ports:
